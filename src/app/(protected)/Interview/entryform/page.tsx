@@ -1,13 +1,27 @@
 'use client';
 
+import { getResume, uploadResume } from "@/services/resumes.service";
+import { updateResumeData } from "@/store/slices/appSlice";
 import Link from "next/link";
 import { ChangeEvent, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 const EntryForm = () => {
+  const dispatch = useDispatch();
+
+  const [name, setName] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [level, setLevel] = useState<"junior" | "mid" | "senior">("mid");
+  const [role, setRole] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [resumeData, setResumeData] = useState<any>(null);
+  const [extracting, setExtracting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const handleFileUpload = () => {
     if (!fileInputRef || !fileInputRef.current) {
       return;
@@ -20,6 +34,84 @@ const EntryForm = () => {
     if (!e.target.files) return;
     setFile(e.target.files[0]);
   }
+
+  const handleStartInterview = async () => {
+    if (!file) {
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await uploadResume(formData);
+
+      console.log('Resume uploaded -> ', res);
+      toast.success('Resume uploaded');
+
+      setResumeData(res);
+      dispatch(updateResumeData(res));
+
+      // Store resume ID in localStorage for later use
+      if (res.id) {
+        localStorage.setItem('resumeId', res.id.toString());
+      }
+
+      // Check if text extraction is in progress
+      if (res.status === 'processing') {
+        setExtracting(true);
+        pollForExtraction(res.id);
+      } else if (res.status === 'extracted') {
+        setSuccess(true);
+      } else {
+        setSuccess(true);
+      }
+    } catch (error) {
+      toast.error("Problem in uploading the resume");
+      console.log("Error in uploading resume -> ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const pollForExtraction = async (resumeId: number) => {
+    // Poll every 2 seconds for extraction status
+    const maxAttempts = 30; // 60 seconds max
+    let attempts = 0;
+
+    const poll = async () => {
+      try {
+        const response = await getResume(resumeId);
+        const resume = response.data;
+
+        if (resume.status === 'extracted') {
+          setExtracting(false);
+          setResumeData(resume);
+          dispatch(updateResumeData(resume));
+          setSuccess(true);
+        } else if (resume.status === 'failed') {
+          setExtracting(false);
+          setError('Failed to extract text from PDF. The resume was uploaded but text extraction failed.');
+          setResumeData(resume);
+        } else if (attempts < maxAttempts) {
+          attempts++;
+          setTimeout(poll, 2000);
+        } else {
+          setExtracting(false);
+          setError('Text extraction is taking longer than expected. You can continue to the interview.');
+          setResumeData(resume);
+        }
+      } catch (err) {
+        console.error('Error polling extraction status:', err);
+        setExtracting(false);
+      }
+    };
+
+    poll();
+  };
+
+  const isDisabled = Boolean(!name.trim() || !role || !level || !file);
 
   return (
     <div>
@@ -36,25 +128,6 @@ const EntryForm = () => {
           </div>
           {/* Form Card */}
           <div className="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden">
-            {/* Progress Bar */}
-            {/* <div className="bg-slate-50 border-b border-slate-100 px-6 py-4">
-              <div className="flex flex-col gap-2">
-                <div className="flex justify-between items-center">
-                  <p className="text-slate-900 text-sm font-semibold">
-                    Step 1 of 2
-                  </p>
-                  <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
-                    Setup
-                  </span>
-                </div>
-                <div className="rounded-full bg-slate-200 h-1.5 w-full overflow-hidden">
-                  <div
-                    className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
-                    style={{ width: "50%" }}
-                  />
-                </div>
-              </div>
-            </div> */}
             {/* Form Fields */}
             <div className="p-6 md:p-8 space-y-8">
               {/* Section: Personal Details */}
@@ -76,6 +149,10 @@ const EntryForm = () => {
                     className="w-full rounded-lg text-sm border-slate-300 bg-slate-50 text-slate-900 focus:border-primary focus:ring-primary placeholder:text-slate-400 h-12 px-4 transition-shadow"
                     placeholder="e.g. Jane Doe"
                     type="text"
+                    value={name}
+                    onChange={e => {
+                      setName(e.target.value);
+                    }}
                   />
                 </div>
                 {/* Role & Experience Grid */}
@@ -86,7 +163,13 @@ const EntryForm = () => {
                       Role Applying For
                     </label>
                     <div className="relative">
-                      <select className="w-full text-sm rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-primary focus:ring-primary h-12 px-4 appearance-none cursor-pointer">
+                      <select
+                        className="w-full text-sm rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-primary focus:ring-primary h-12 px-4 appearance-none cursor-pointer"
+                        value={role}
+                        onChange={e => {
+                          setRole(e.target.value);
+                        }}
+                      >
                         <option>
                           Select a role
                         </option>
@@ -209,11 +292,23 @@ const EntryForm = () => {
             </div>
             {/* Footer Actions */}
             <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row-reverse gap-3 sm:gap-4 items-center justify-between">
-              <button className="w-full sm:w-auto cursor-pointer inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary hover:bg-blue-600 text-white font-medium rounded-lg transition-colors shadow-sm focus:ring-4 focus:ring-primary/20">
+              <button
+                className="w-full sm:w-auto cursor-pointer inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary hover:bg-blue-600 text-white font-medium rounded-lg transition-colors shadow-sm focus:ring-4 focus:ring-primary/20 disabled:cursor-not-allowed disabled:bg-black/5 disabled:text-black/50"
+                disabled={isDisabled}
+                onClick={handleStartInterview}
+              >
+                {
+                  isLoading &&
+                  <span className="material-symbols-outlined animate-spin">
+                    progress_activity
+                  </span>
+                }
                 <span className="text-sm">Start Interview</span>
-                <span className="material-symbols-outlined text-lg">
-                  arrow_forward
-                </span>
+                {
+                  !isLoading &&
+                  <span className="material-symbols-outlined text-lg">
+                    arrow_forward
+                  </span>}
               </button>
               <Link href="/dashboard">
                 <button className="w-full sm:w-auto cursor-pointer inline-flex items-center justify-center gap-2 px-4 py-3 text-slate-600 hover:text-slate-900 text-sm font-medium rounded-lg transition-colors">

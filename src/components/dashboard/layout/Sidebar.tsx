@@ -27,7 +27,13 @@ const Sidebar = () => {
             active: pathname == "/dashboard",
           },
           {
-            label: "Take an AI Interview",
+            label: "Job Descriptions",
+            icon: "videocam",
+            href: "/Interview",
+            active: pathname == "/Interview"
+          },
+          {
+            label: "Practice Interview",
             icon: "videocam",
             href: "/Interview",
             active: pathname == "/Interview"

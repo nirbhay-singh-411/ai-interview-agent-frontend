@@ -67,12 +67,12 @@ const Header = () => {
                   'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBPLPflqwNo51y_SQVIyWPAX3vG7vV7FTSrJF-D2tCSUFq6WpLxY994WP9N_MhJrAZndAJSVBS7yjdoPeE-GKGiHynL0fMjxVxRdJ0m0Wq1hWHacd_E0QcOghzJ7XSw1J2ebYFG6mnDJKhV7fV7z2VapzbyGIOJhjuhs9hN3JxAVGP4bha6beup14R3Ja_L8THcI10WU6Fc2wp93Yferi6JX3O41phmS9Oi7yrwPv8S4uo850Jq7OkxkXGEtacTLl7lxwFnj66T7sxz")',
               }}
             />
-            <div className="hidden sm:block text-left mr-1">
+            <div className="hidden sm:block text-left mr-1 cursor-pointer">
               <p className="text-xs font-bold text-slate-900 leading-tight">
                 Sarah Wilson
               </p>
               <p className="text-[10px] text-slate-500 leading-tight">
-                Candidate Account
+                ADMIN
               </p>
             </div>
             <span className="material-symbols-outlined text-slate-400 group-hover:text-slate-600 transition-colors">
