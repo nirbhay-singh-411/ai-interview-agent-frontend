@@ -236,7 +236,7 @@ const page = () => {
                   </p>
                   <div className="relative">
                     <select className="form-select w-full rounded-lg text-[#0d141b] focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#cfdbe7] bg-slate-50 focus:border-primary h-12 px-4 text-base font-normal transition-all appearance-none">
-                      <option disabled selected value>
+                      <option disabled selected >
                         Select Role
                       </option>
                       <option value="hr">HR Manager</option>
