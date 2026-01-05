@@ -67,7 +67,7 @@ const EntryForm = () => {
                     </label>
                     <div className="relative">
                       <select className="w-full rounded-lg border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 px-4 appearance-none cursor-pointer">
-                        <option disabled selected value>
+                        <option disabled selected>
                           Select a role
                         </option>
                         <option value="frontend">Frontend Developer</option>
