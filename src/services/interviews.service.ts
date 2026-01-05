@@ -79,3 +79,18 @@ export const getInterviewReport = async (id: number) => {
     const res = await apiClient.get(`/api/interviews/${id}/report/`);
     return res.data;
 };
+
+export const matchResume = async (jobDescriptionId: number, resumeId: number) => {
+    const res = await apiClient.post(`/api/interviews/job-descriptions/${jobDescriptionId}/match-resume/`, { resume_id: resumeId });
+    return res.data;
+}
+
+export const matchAllResumes = async (jobDescriptionId: number) => {
+    const res = await apiClient.post(`/api/interviews/job-descriptions/${jobDescriptionId}/match-all-resumes/`);
+    return res.data;
+}
+
+export const getMatches = async (jobDescriptionId: number, params?: { status?: string; min_score?: number }) => {
+    const res = await apiClient.get(`/api/interviews/job-descriptions/${jobDescriptionId}/matches/`, { params });
+    return res.data;
+}
