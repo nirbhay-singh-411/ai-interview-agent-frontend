@@ -28,9 +28,9 @@ const Sidebar = () => {
           },
           {
             label: "Job Descriptions",
-            icon: "videocam",
-            href: "/Interview",
-            active: pathname == "/Interview"
+            icon: "cases",
+            href: "/job-description",
+            active: pathname == "/job-description"
           },
           {
             label: "Practice Interview",
