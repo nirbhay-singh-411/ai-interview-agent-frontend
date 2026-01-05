@@ -1,6 +1,9 @@
 export default function FeaturesSection() {
   return (
-    <div id="features" className="py-20 px-4 bg-slate-50 border-t border-slate-100">
+    <div
+      id="features"
+      className="py-20 px-4 bg-slate-50 border-t border-slate-100"
+    >
       <div className="layout-content-container flex flex-col max-w-[1200px] mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-slate-900 text-3xl font-bold mb-4">
@@ -13,14 +16,16 @@ export default function FeaturesSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="bg-white border border-slate-100 shadow-sm p-6 rounded-xl hover:shadow-md transition-shadow group">
             <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 mb-4 group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined">videocam</span>
+              <span className="material-symbols-outlined">
+                network_intelligence_history
+              </span>{" "}
             </div>
             <h3 className="text-slate-900 text-lg font-bold mb-2">
-              AI Video Interviewer
+              Real-time Adaptivity
             </h3>
             <p className="text-slate-600 text-sm leading-relaxed">
-              Human-like avatars that can see, hear, and speak, putting
-              candidates at ease while conducting rigorous interviews.
+              Every question adapts to user performance using Item Response
+              Theory (IRT) and advanced Al algorithms.
             </p>
           </div>
           <div className="bg-white border border-slate-100 shadow-sm p-6 rounded-xl hover:shadow-md transition-shadow group">
@@ -76,11 +81,12 @@ export default function FeaturesSection() {
               <span className="material-symbols-outlined">summarize</span>
             </div>
             <h3 className="text-slate-900 text-lg font-bold mb-2">
-              Recruiter-Ready Reports
+              Recruiter-Ready Reports & Deep Analytics
             </h3>
-            <p className="text-slate-600 text-sm leading-relaxed">
-              Comprehensive summaries, key highlights, and red flags delivered
-              straight to your inbox.
+            <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">
+              Powered by adaptive intelligence, our assessments understand each
+              individual’s learning journey while delivering precise summaries,
+              key insights, and risk signals directly to your inbox.
             </p>
           </div>
         </div>
