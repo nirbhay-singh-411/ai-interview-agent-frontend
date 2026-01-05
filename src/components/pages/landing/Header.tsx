@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Header() {
   return (
     <div className="sticky top-0 z-50 glass-panel border-b-0">
@@ -29,16 +31,16 @@ export default function Header() {
                   >
                     Features
                   </a>
-                  <a
+                  <Link
                     className="text-slate-600 text-sm font-medium leading-normal hover:text-primary transition-colors"
                     href="#letsConnect"
                   >
                    {`Let's Connect`}
-                  </a>
+                  </Link>
                 </div>
-                <button className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-blue-600 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-md shadow-primary/20">
+                <Link href="/login" className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-blue-600 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-md shadow-primary/20">
                   <span className="truncate">Login</span>
-                </button>
+                </Link>
               </div>
               <div className="md:hidden text-slate-900">
                 <span className="material-symbols-outlined">menu</span>
