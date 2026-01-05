@@ -104,7 +104,7 @@ const page = () => {
                   <div className="w-full md:w-2/5 relative h-48 md:h-auto overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-purple-500/20 mix-blend-overlay z-10" />
                     <div
-                      className="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover/card:scale-105"
+                      className="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover/card:scale-110"
                       data-alt="Abstract blue digital network representing AI technology"
                       style={{
                         backgroundImage:
@@ -173,10 +173,10 @@ const page = () => {
                     </div>
                   </div>
                   <a
-                    className="inline-flex items-center gap-1 text-sm font-semibold text-primary mt-4 hover:underline"
+                    className="inline-flex items-center gap-1 text-sm font-semibold text-primary mt-4"
                     href="#"
                   >
-                    View all history{" "}
+                    <span className="hover:underline">View all history{" "}</span>
                     <span className="material-symbols-outlined text-sm">
                       arrow_forward
                     </span>
@@ -192,7 +192,7 @@ const page = () => {
                       person_search
                     </span>
                   </div>
-                  <span className="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">
+                  <span className="cursor-pointer material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">
                     edit
                   </span>
                 </div>
@@ -218,7 +218,7 @@ const page = () => {
                       school
                     </span>
                   </div>
-                  <span className="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">
+                  <span className="cursor-pointer material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">
                     open_in_new
                   </span>
                 </div>
@@ -248,7 +248,7 @@ const page = () => {
                       forum
                     </span>
                   </div>
-                  <div className="size-2 rounded-full bg-red-500 animate-pulse" />
+                  {/* <div className="size-2 rounded-full bg-red-500 animate-pulse" /> */}
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 mb-2">
                   Community
