@@ -29,8 +29,8 @@ const Sidebar = () => {
           {
             label: "Take an AI Interview",
             icon: "videocam",
-            href: "/interview",
-            active: pathname == "/interview"
+            href: "/Interview",
+            active: pathname == "/Interview"
           },
           {
             label: "Interview History",
