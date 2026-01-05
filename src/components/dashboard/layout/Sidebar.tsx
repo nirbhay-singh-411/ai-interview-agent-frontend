@@ -30,13 +30,13 @@ const Sidebar = () => {
             label: "Job Descriptions",
             icon: "cases",
             href: "/job-description",
-            active: pathname == "/job-description"
+            active: pathname.includes("/job-description")
           },
           {
             label: "Practice Interview",
             icon: "videocam",
             href: "/Interview",
-            active: pathname == "/Interview"
+            active: pathname.includes("/Interview")
           },
           {
             label: "Interview History",
