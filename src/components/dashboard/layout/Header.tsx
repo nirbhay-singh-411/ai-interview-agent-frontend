@@ -1,21 +1,56 @@
-import React from "react";
+'use client';
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
+  const pathname = usePathname();
+
+  const segments = pathname
+    .split("/")
+    .filter(Boolean);
+
+  const paths = segments.map((_, i) => "/" + segments.slice(0, i + 1).join("/"));
+
   return (
-    <header className="h-16 flex-shrink-0 bg-background-light/95 backdrop-blur z-30 sticky top-0 px-4 sm:px-6 lg:px-8 border-b border-transparent">
+    <header className="h-16 shrink-0 bg-background-light/95 backdrop-blur z-30 sticky top-0 px-4 sm:px-6 lg:px-8 border-b border-transparent">
       <div className="h-full flex items-center justify-between">
         <button className="md:hidden p-2 -ml-2 text-slate-600 hover:text-slate-900">
           <span className="material-symbols-outlined">menu</span>
         </button>
         <div className="hidden md:flex items-center gap-2 text-sm">
-          <a
+          <Link
             className="text-slate-500 hover:text-primary transition-colors"
             href="#"
           >
             Home
-          </a>
-          <span className="text-slate-300">/</span>
-          <span className="text-slate-900 font-medium">Dashboard</span>
+          </Link>
+
+          {segments.map((seg, i) => {
+            const isLast = i === segments.length - 1;
+            const label = seg
+              .replace(/-/g, " ")         // convert-slug → convert slug
+              .replace(/\b\w/g, c => c.toUpperCase()); // Capitalize Words
+
+            return (
+              <div key={seg} className="flex items-center gap-2">
+                <span className="text-slate-300">/</span>
+
+                {isLast ? (
+                  <span className="text-slate-900 font-medium">
+                    {label}
+                  </span>
+                ) : (
+                  <Link
+                    href={paths[i]}
+                    className="text-slate-500 hover:text-primary transition-colors"
+                  >
+                    {label}
+                  </Link>
+                )}
+              </div>
+            );
+          })}
         </div>
         <div className="flex items-center gap-4 ml-auto">
           <button className="flex items-center justify-center size-9 rounded-full hover:bg-slate-200 text-slate-600 transition-colors relative">

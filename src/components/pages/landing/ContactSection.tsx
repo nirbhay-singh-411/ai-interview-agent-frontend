@@ -5,7 +5,7 @@ export default function ContactSection() {
       className="py-24 bg-gradient-to-b from-white to-slate-50 px-4 relative overflow-hidden"
     >
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-blue-100/40 rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="max-w-[1140px] mx-auto glass-panel rounded-3xl shadow-2xl shadow-slate-200/50 border border-white/50 relative z-10 overflow-hidden">
+      <div className="max-w-[1140px] bg-white mx-auto glass-panel rounded-3xl shadow-2xl drop-shadow-2xl shadow-slate-200 border border-white/50 relative z-10 overflow-hidden">
         <div className="grid lg:grid-cols-2">
           <div className="p-8 md:p-12 flex flex-col justify-center bg-white/40">
             <div className="mb-8">

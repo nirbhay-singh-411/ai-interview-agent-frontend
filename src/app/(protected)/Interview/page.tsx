@@ -1,5 +1,4 @@
 import Link from "next/link";
-import React from "react";
 
 const InterviewInitiate = () => {
   return (
@@ -125,7 +124,7 @@ const InterviewInitiate = () => {
                 {/* Action Footer */}
                 <div className="p-6 md:p-8 border-t border-slate-100 flex flex-col items-center justify-center gap-4">
                   <Link
-                    href={"/Interview/entryform"}
+                    href={"/interview/entryform"}
                     className="bg-primary hover:bg-blue-600 text-white text-base font-semibold py-3 px-8 rounded-lg shadow-lg shadow-blue-500/20 transition-all hover:shadow-blue-500/30 w-full md:w-auto min-w-[280px]"
                   >
                     Proceed to Interview Setup

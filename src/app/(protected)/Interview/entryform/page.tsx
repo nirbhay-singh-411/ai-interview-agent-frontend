@@ -1,10 +1,30 @@
-import React from "react";
+'use client';
+
+import Link from "next/link";
+import { ChangeEvent, useRef, useState } from "react";
 
 const EntryForm = () => {
+  const [file, setFile] = useState<File | null>(null);
+  const [level, setLevel] = useState<"junior" | "mid" | "senior">("mid");
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const handleFileUpload = () => {
+    if (!fileInputRef || !fileInputRef.current) {
+      return;
+    }
+
+    fileInputRef.current.click();
+  }
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    setFile(e.target.files[0]);
+  }
+
   return (
     <div>
       <main className="flex-1 flex flex-col items-center justify-center p-4 md:p-8">
-        <div className="w-full max-w-[640px] flex flex-col gap-6">
+        <div className="w-full max-w-160 flex flex-col gap-6">
           {/* Page Heading */}
           <div className="text-center space-y-2 mb-2">
             <h1 className="text-slate-900 text-3xl md:text-4xl font-black leading-tight tracking-tight">
@@ -17,7 +37,7 @@ const EntryForm = () => {
           {/* Form Card */}
           <div className="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden">
             {/* Progress Bar */}
-            <div className="bg-slate-50 border-b border-slate-100 px-6 py-4">
+            {/* <div className="bg-slate-50 border-b border-slate-100 px-6 py-4">
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center">
                   <p className="text-slate-900 text-sm font-semibold">
@@ -34,7 +54,7 @@ const EntryForm = () => {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
             {/* Form Fields */}
             <div className="p-6 md:p-8 space-y-8">
               {/* Section: Personal Details */}
@@ -53,7 +73,7 @@ const EntryForm = () => {
                     Full Name
                   </label>
                   <input
-                    className="w-full rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-primary focus:ring-primary placeholder:text-slate-400 h-12 px-4 transition-shadow"
+                    className="w-full rounded-lg text-sm border-slate-300 bg-slate-50 text-slate-900 focus:border-primary focus:ring-primary placeholder:text-slate-400 h-12 px-4 transition-shadow"
                     placeholder="e.g. Jane Doe"
                     type="text"
                   />
@@ -66,8 +86,8 @@ const EntryForm = () => {
                       Role Applying For
                     </label>
                     <div className="relative">
-                      <select className="w-full rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-primary focus:ring-primary h-12 px-4 appearance-none cursor-pointer">
-                        <option disabled selected>
+                      <select className="w-full text-sm rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-primary focus:ring-primary h-12 px-4 appearance-none cursor-pointer">
+                        <option>
                           Select a role
                         </option>
                         <option value="frontend">Frontend Developer</option>
@@ -87,16 +107,26 @@ const EntryForm = () => {
                     <label className="block text-sm font-medium text-slate-700">
                       Experience Level
                     </label>
+
                     <div className="flex bg-slate-100 p-1 rounded-lg h-12">
-                      <button className="flex-1 rounded-md text-sm font-medium transition-all text-slate-500 hover:text-slate-700 focus:outline-none">
-                        Junior
-                      </button>
-                      <button className="flex-1 rounded-md text-sm font-medium transition-all bg-white shadow-sm text-primary ring-1 ring-black/5 focus:outline-none">
-                        Mid
-                      </button>
-                      <button className="flex-1 rounded-md text-sm font-medium transition-all text-slate-500 hover:text-slate-700 focus:outline-none">
-                        Senior
-                      </button>
+                      {["junior", "mid", "senior"].map((item) => {
+                        const selected = level === item;
+
+                        return (
+                          <button
+                            key={item}
+                            onClick={() => setLevel(item as "junior" | "mid" | "senior")}
+                            className={`flex-1 cursor-pointer rounded-md text-sm font-medium transition-all
+                ${selected
+                                ? "bg-white shadow-sm text-primary ring-1 ring-black/5"
+                                : "text-slate-500 hover:text-slate-700"
+                              }
+              `}
+                          >
+                            {item[0].toUpperCase() + item.slice(1)}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
@@ -116,7 +146,14 @@ const EntryForm = () => {
                   </span>
                 </div>
                 {/* Drop Zone */}
-                <div className="group relative flex flex-col items-center justify-center w-full h-40 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer">
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  className="hidden"
+                  onChange={e => handleFileChange(e)}
+                  accept="application/pdf"
+                />
+                <div onClick={handleFileUpload} className="group relative flex flex-col items-center justify-center w-full h-40 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer">
                   <div className="flex flex-col items-center justify-center pt-5 pb-6 text-center px-4">
                     <div className="bg-primary/10 text-primary p-2 rounded-full mb-3 group-hover:scale-110 transition-transform">
                       <span className="material-symbols-outlined text-3xl">
@@ -136,42 +173,53 @@ const EntryForm = () => {
                   <input className="hidden" id="dropzone-file" type="file" />
                 </div>
                 {/* Uploaded File Preview (Mock State) */}
-                <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-white p-1.5 rounded text-green-600 shadow-sm">
-                      <span className="material-symbols-outlined text-xl">
-                        picture_as_pdf
-                      </span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium text-slate-900">
-                        jane_doe_resume.pdf
-                      </span>
-                      <span className="text-xs text-green-600 flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[10px]">
-                          check_circle
+                {file && (
+                  <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-white p-1.5 rounded text-green-600 shadow-sm">
+                        <span className="material-symbols-outlined text-xl">
+                          picture_as_pdf
                         </span>
-                        Ready for analysis
-                      </span>
+                      </div>
+
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-slate-900">
+                          {file.name}
+                        </span>
+
+                        <span className="text-xs text-green-600 flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[10px]">
+                            check_circle
+                          </span>
+                          Ready for analysis
+                        </span>
+                      </div>
                     </div>
+
+                    <button
+                      className="text-slate-400 hover:text-red-500 transition-colors p-1"
+                      onClick={() => setFile(null)}
+                    >
+                      <span className="material-symbols-outlined">close</span>
+                    </button>
                   </div>
-                  <button className="text-slate-400 hover:text-red-500 transition-colors p-1">
-                    <span className="material-symbols-outlined">close</span>
-                  </button>
-                </div>
+                )}
+
               </div>
             </div>
             {/* Footer Actions */}
             <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row-reverse gap-3 sm:gap-4 items-center justify-between">
-              <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary hover:bg-blue-600 text-white font-medium rounded-lg transition-colors shadow-sm focus:ring-4 focus:ring-primary/20">
-                <span>Start Interview</span>
+              <button className="w-full sm:w-auto cursor-pointer inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary hover:bg-blue-600 text-white font-medium rounded-lg transition-colors shadow-sm focus:ring-4 focus:ring-primary/20">
+                <span className="text-sm">Start Interview</span>
                 <span className="material-symbols-outlined text-lg">
                   arrow_forward
                 </span>
               </button>
-              <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-3 text-slate-600 hover:text-slate-900 font-medium rounded-lg transition-colors">
-                Back to Dashboard
-              </button>
+              <Link href="/dashboard">
+                <button className="w-full sm:w-auto cursor-pointer inline-flex items-center justify-center gap-2 px-4 py-3 text-slate-600 hover:text-slate-900 text-sm font-medium rounded-lg transition-colors">
+                  Back to Dashboard
+                </button>
+              </Link>
             </div>
           </div>
           <div className="flex justify-center items-center gap-2 text-xs text-slate-400 mt-2">

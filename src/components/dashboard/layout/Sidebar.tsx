@@ -29,8 +29,8 @@ const Sidebar = () => {
           {
             label: "Take an AI Interview",
             icon: "videocam",
-            href: "/Interview",
-            active: pathname == "/Interview"
+            href: "/interview",
+            active: pathname == "/interview"
           },
           {
             label: "Interview History",
@@ -46,7 +46,7 @@ const Sidebar = () => {
           <a
             key={item.label}
             className={
-              "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors" +
+              "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm" +
               (item.active
                 ? " bg-primary/10 text-primary font-semibold"
                 : " text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium group")
@@ -85,7 +85,7 @@ const Sidebar = () => {
           ].map((item) => (
             <a
               key={item.label}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium transition-colors group"
+              className="flex items-center text-sm gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium transition-colors group"
               href={item.href}
             >
               <span className="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">

@@ -1,8 +1,10 @@
+import Link from "next/link";
+
 export default function HeroSection() {
   return (
     <div className="relative flex flex-col items-center justify-center pt-12 pb-20 px-4 bg-white">
       <div className="hero-glow" />
-      <div className="layout-content-container flex flex-col max-w-[1200px] w-full z-10">
+      <div className="layout-content-container flex flex-col max-w-300 w-full z-10">
         <div className="@container">
           <div className="flex flex-col gap-12 py-10 @[864px]:flex-row items-center">
             <div className="flex flex-col gap-6 flex-1 items-start text-left">
@@ -24,12 +26,11 @@ export default function HeroSection() {
                 </h2>
               </div>
               <div className="flex flex-wrap gap-4 mt-2">
-                <button className="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary hover:bg-blue-600 transition-all text-white text-base font-bold leading-normal tracking-[0.015em] shadow-lg shadow-primary/25">
-                  <span className="truncate">Start AI Interview</span>
-                </button>
-                {/* <button className="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-base font-bold leading-normal tracking-[0.015em] transition-all shadow-sm">
-                  <span className="truncate">Request Demo</span>
-                </button> */}
+                <Link href="/interview">
+                  <button className="flex min-w-35 cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary hover:bg-blue-600 transition-all text-white text-base font-bold leading-normal tracking-[0.015em] shadow-lg shadow-primary/25">
+                    <span className="truncate">Start AI Interview</span>
+                  </button>
+                </Link>
               </div>
               <div className="flex items-center gap-4 text-sm text-slate-500 mt-2">
                 <div className="flex -space-x-2 overflow-hidden">
@@ -65,8 +66,8 @@ export default function HeroSection() {
               </div>
             </div>
             <div className="w-full flex-1 relative group perspective-1000">
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-200 to-purple-200 rounded-xl blur opacity-60 group-hover:opacity-80 transition duration-1000 group-hover:duration-200" />
-              <div className="relative w-full bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xl aspect-[4/3] flex flex-col">
+              <div className="absolute -inset-1 bg-linear-to-r from-blue-200 to-purple-200 rounded-xl blur opacity-60 group-hover:opacity-80 transition duration-1000 group-hover:duration-200" />
+              <div className="relative w-full bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xl flex flex-col">
                 <div className="h-10 border-b border-slate-200 bg-slate-50 flex items-center px-4 gap-2">
                   <div className="w-3 h-3 rounded-full bg-red-400" />
                   <div className="w-3 h-3 rounded-full bg-yellow-400" />
@@ -76,13 +77,15 @@ export default function HeroSection() {
                     REC 00:04:23
                   </div>
                 </div>
-                <div className="flex-1 relative bg-slate-100 overflow-hidden">
+                <div className="min-h-fit h-125 relative bg-slate-100 overflow-hidden">
                   <div
                     className="absolute inset-0 bg-cover bg-center"
                     data-alt="Professional woman in business attire looking at camera, representing an interview candidate"
                     style={{
                       backgroundImage:
                         'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDAEVyyjZ2o9WBFlcul9vZBrkAW1w5u8cJ1IGxFxzxt21TbyywzfUxHavE9ux82kuGZVUmw8EqU0ednoblk-q8vxCCWZgmAN-XvDQpxEFl2WU5It5ps7LjxMGjnpVMHOa5DkBtM_oFl2QkVwi6HHvByzHSnY7wnmFY83Fs4tWCrR4wPKrY1pwhSScyi_SGdQeZcyBzNThQ0qgXFQ8_aBoEQNqMrPMk0-uXfeUJc_FTpZiAG5sZjhdq5hx3YRiJcCDK5j-yqof7jDnV6")',
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "top"
                     }}
                   />
                   <div className="absolute bottom-4 right-4 w-32 h-24 bg-white rounded-lg border border-slate-200 shadow-xl overflow-hidden">
@@ -95,7 +98,7 @@ export default function HeroSection() {
                       <span className="font-medium">AI Interviewer</span>
                     </div>
                   </div>
-                  <div className="absolute top-4 left-4 glass-panel rounded-lg p-3 max-w-[200px] border-l-4 border-l-green-500 shadow-lg">
+                  <div className="absolute top-4 left-4 glass-panel rounded-lg p-3 max-w-50 border-l-4 border-l-green-500 shadow-lg">
                     <p className="text-xs text-slate-900 uppercase font-bold mb-1">
                       Live Sentiment
                     </p>
