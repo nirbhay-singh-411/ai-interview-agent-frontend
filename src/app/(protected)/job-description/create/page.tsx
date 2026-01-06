@@ -64,7 +64,7 @@ function CreateJobDescription() {
                             <input
                                 name="title"
                                 placeholder="e.g., Senior Frontend Engineer"
-                                className="w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+                                className="w-full border-[1.7px] border-gray-200 rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
                                 onChange={handleChange}
                                 required
                             />
@@ -78,7 +78,7 @@ function CreateJobDescription() {
                             <input
                                 name="company"
                                 placeholder="e.g., Acme Inc."
-                                className="text-sm w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                className="text-sm w-full border-[1.7px] border-gray-200 rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                 onChange={handleChange}
                             />
                         </div>
@@ -91,7 +91,22 @@ function CreateJobDescription() {
                             <textarea
                                 name="description"
                                 placeholder="Describe the role, responsibilities, and expectations..."
-                                className="text-sm w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+                                className="text-sm w-full border-[1.7px] border-gray-200 rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+                                rows={5}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <label className="text-sm font-medium text-gray-700">
+                                Required Skills <span className="text-red-500">*</span>
+                            </label>
+                            <textarea
+                                id="required_skills"
+                                name="required_skills"
+                                placeholder="Describe the role, responsibilities, and expectations..."
+                                className="text-sm w-full border-[1.7px] border-gray-200 rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
                                 rows={5}
                                 onChange={handleChange}
                                 required
@@ -107,7 +122,7 @@ function CreateJobDescription() {
                                 </label>
                                 <select
                                     name="experience_level"
-                                    className="text-sm w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                    className="text-sm w-full border-[1.7px] border-gray-200 rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                     onChange={handleChange}
                                 >
                                     <option value="entry">Entry</option>
@@ -123,7 +138,7 @@ function CreateJobDescription() {
                                 <input
                                     name="location"
                                     placeholder="Remote / City"
-                                    className="text-sm w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                    className="text-sm w-full border-[1.7px] border-gray-200 rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                     onChange={handleChange}
                                 />
                             </div>
@@ -135,7 +150,7 @@ function CreateJobDescription() {
                                 <input
                                     name="salary_range"
                                     placeholder="$80k – $120k"
-                                    className="text-sm w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                    className="text-sm w-full border-[1.7px] border-gray-200 rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                     onChange={handleChange}
                                 />
                             </div>

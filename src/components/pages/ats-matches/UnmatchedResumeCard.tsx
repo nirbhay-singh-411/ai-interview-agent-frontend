@@ -9,7 +9,7 @@ export function UnmatchedResumeCard({ resume, matching, onMatch }: any) {
             <button
                 onClick={onMatch}
                 disabled={matching}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300"
+                className="px-4 py-2 text-sm font-semibold cursor-pointer bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300"
             >
                 Match Resume
             </button>

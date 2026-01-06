@@ -52,7 +52,9 @@ export default function ATSMatchesPage() {
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
     const [matching, setMatching] = useState(false);
+    const [selectedUnmatched, setSelectedUnmatched] = useState<any | null>(null);
     const [error, setError] = useState<string | null>(null);
+
 
     useEffect(() => {
         if (jobDescriptionId) {
@@ -135,6 +137,7 @@ export default function ATSMatchesPage() {
     };
 
     const handleMatchResume = async (resumeId: number) => {
+        setSelectedUnmatched(resumeId);
         if (!jobDescriptionId) return;
 
         setMatching(true);
@@ -142,7 +145,7 @@ export default function ATSMatchesPage() {
 
         try {
             await matchResume(jobDescriptionId, resumeId);
-            await loadData(); // Reload matches
+            await loadData();
         } catch (err: any) {
             console.error('Error matching resume:', err);
             setError(err.response?.data?.error || 'Failed to match resume');
@@ -172,20 +175,6 @@ export default function ATSMatchesPage() {
     const handleConductInterview = (resumeId: number, matchId: number) => {
         // Navigate to interview configuration page
         router.push(`/interview-config?jd=${jobDescriptionId}&resume=${resumeId}&match=${matchId}`);
-    };
-
-    const getScoreColor = (score: number | string) => {
-        const numScore = typeof score === 'string' ? parseFloat(score) : score;
-        if (numScore >= 70) return 'text-green-600 bg-green-50 border-green-200';
-        if (numScore >= 50) return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-        return 'text-red-600 bg-red-50 border-red-200';
-    };
-
-    const getScoreLabel = (score: number | string) => {
-        const numScore = typeof score === 'string' ? parseFloat(score) : score;
-        if (numScore >= 70) return 'Strong Match';
-        if (numScore >= 50) return 'Moderate Match';
-        return 'Weak Match';
     };
 
     // allResumes already contains only unmatched resumes for this JD
@@ -241,7 +230,7 @@ export default function ATSMatchesPage() {
                             <UnmatchedResumeCard
                                 key={resume.id}
                                 resume={resume}
-                                matching={matching}
+                                matching={matching && resume.id === selectedUnmatched}
                                 onMatch={() => handleMatchResume(resume.id)}
                             />
                         ))}

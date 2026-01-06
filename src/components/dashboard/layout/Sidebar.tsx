@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation";
 
 const Sidebar = () => {
   const pathname = usePathname();
-  console.log(pathname)
+
   return (
     <aside className="hidden max-h-screen sticky top-0 md:flex flex-col w-72 bg-card-light border-r border-slate-200 flex-shrink-0 z-40">
       <div className="h-20 flex items-center gap-3 px-6 border-b border-slate-100">
@@ -26,13 +26,13 @@ const Sidebar = () => {
             active: pathname == "/dashboard",
           },
           {
-            label: "Job Descriptions",
+            label: "AI Interview",
             icon: "cases",
             href: "/job-description",
             active: pathname.includes("/job-description")
           },
           {
-            label: "Practice Interview",
+            label: "Mock AI Interview",
             icon: "videocam",
             href: "/practice-interview",
             active: pathname.includes("/practice-interview")
@@ -40,7 +40,8 @@ const Sidebar = () => {
           {
             label: "Interview History",
             icon: "history",
-            href: "#",
+            href: "/interview-history",
+            active: pathname.includes("/interview-history")
           },
           {
             label: "Profile & Resume",

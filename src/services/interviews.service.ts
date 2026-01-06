@@ -99,3 +99,8 @@ export const getResumesForJD = async (jobDescriptionId: number, params?: { match
     const res = await apiClient.get(`/api/interviews/job-descriptions/${jobDescriptionId}/resumes/`, { params });
     return res.data;
 }
+
+export const getInterviewHistory = async (params?: { resume_id?: number; job_description_id?: number; status?: string; limit?: number; offset?: number }) => {
+    const res = await apiClient.get('/api/interviews/history/', { params });
+    return res.data;
+}

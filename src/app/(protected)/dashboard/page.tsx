@@ -174,7 +174,7 @@ const page = () => {
                   </div>
                   <a
                     className="inline-flex items-center gap-1 text-sm font-semibold text-primary mt-4"
-                    href="#"
+                    href="/interview-history"
                   >
                     <span className="hover:underline">View all history{" "}</span>
                     <span className="material-symbols-outlined text-sm">

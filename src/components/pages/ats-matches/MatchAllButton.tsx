@@ -6,7 +6,7 @@ export function MatchAllButton({ count, matching, onMatch }: any) {
             <button
                 onClick={onMatch}
                 disabled={matching}
-                className="px-6 py-3 text-sm font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300"
+                className="px-6 py-3 text-sm font-semibold cursor-pointer bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300"
             >
                 {matching ?
                     <div className="flex items-center gap-2">

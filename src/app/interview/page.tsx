@@ -1,11 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { completeInterview, generateInterviewReport, getInterviewQuestions, submitInterviewAnswer } from '@/services/interviews.service';
-import { toast } from 'sonner'; // Assuming you have sonner or react-hot-toast, otherwise use standard alert
 
-// --- Icons ---
 const ClockIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
 );
@@ -418,8 +416,8 @@ export default function InterviewPage() {
                         </div>
 
                         <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border shadow-sm transition-colors ${timeRemaining < 300
-                                ? 'bg-red-50 border-red-200 text-red-700 animate-pulse'
-                                : 'bg-white border-slate-200 text-slate-700'
+                            ? 'bg-red-50 border-red-200 text-red-700 animate-pulse'
+                            : 'bg-white border-slate-200 text-slate-700'
                             }`}>
                             <ClockIcon />
                             <span className="font-mono font-bold text-sm tabular-nums">
@@ -441,8 +439,8 @@ export default function InterviewPage() {
                                 <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                                     <div className="flex items-center gap-2">
                                         <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold ring-1 ring-inset ${currentQuestion.is_mcq
-                                                ? 'bg-blue-50 text-blue-700 ring-blue-600/20'
-                                                : 'bg-amber-50 text-amber-700 ring-amber-600/20'
+                                            ? 'bg-blue-50 text-blue-700 ring-blue-600/20'
+                                            : 'bg-amber-50 text-amber-700 ring-amber-600/20'
                                             }`}>
                                             {currentQuestion.is_mcq ? <ListIcon /> : <CodeIcon />}
                                             {currentQuestion.is_mcq ? 'Multiple Choice' : 'Coding Challenge'}
@@ -468,14 +466,14 @@ export default function InterviewPage() {
                                                         key={index}
                                                         onClick={() => handleOptionSelect(letter)}
                                                         className={`group relative w-full text-left p-4 rounded-xl border-2 transition-all duration-200 ease-in-out ${isSelected
-                                                                ? 'border-blue-600 bg-indigo-50/50 shadow-sm z-10'
-                                                                : 'border-slate-100 hover:border-slate-300 hover:bg-slate-50'
+                                                            ? 'border-blue-600 bg-indigo-50/50 shadow-sm z-10'
+                                                            : 'border-slate-100 hover:border-slate-300 hover:bg-slate-50'
                                                             }`}
                                                     >
                                                         <div className="flex items-start gap-4">
                                                             <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center border transition-colors ${isSelected
-                                                                    ? 'bg-blue-600 border-blue-600 text-white'
-                                                                    : 'bg-white border-slate-300 text-slate-400 group-hover:border-slate-400'
+                                                                ? 'bg-blue-600 border-blue-600 text-white'
+                                                                : 'bg-white border-slate-300 text-slate-400 group-hover:border-slate-400'
                                                                 }`}>
                                                                 {isSelected ? <CheckIcon /> : <span className="text-xs font-bold">{letter}</span>}
                                                             </div>
@@ -567,10 +565,10 @@ export default function InterviewPage() {
                                             key={i}
                                             onClick={() => setCurrentQuestionIndex(i)}
                                             className={`w-9 h-9 rounded-lg text-sm font-medium transition-all duration-200 flex items-center justify-center ${isCurrent
-                                                    ? 'bg-blue-600 text-white shadow-md shadow-indigo-200 scale-110'
-                                                    : answered
-                                                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:border-emerald-300'
-                                                        : 'bg-slate-50 text-slate-500 border border-slate-200 hover:border-slate-300 hover:bg-slate-100'
+                                                ? 'bg-blue-600 text-white shadow-md shadow-indigo-200 scale-110'
+                                                : answered
+                                                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:border-emerald-300'
+                                                    : 'bg-slate-50 text-slate-500 border border-slate-200 hover:border-slate-300 hover:bg-slate-100'
                                                 }`}
                                         >
                                             {i + 1}

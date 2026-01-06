@@ -142,7 +142,7 @@ export async function sendCandidateTestEmail(
 
             <div class="content">
               <div class="greeting">
-                <p>Hi <strong>${candidateName}</strong>,</p>
+                <strong>Greetings For The Day,</strong>
                 <p>Great news! Your interview test has been scheduled. You're all set to begin whenever you're ready.</p>
               </div>
 
@@ -151,7 +151,7 @@ export async function sendCandidateTestEmail(
               </div>
 
               <p style="text-align: center; margin: 30px 0;">
-                <a href="${testLink}" class="cta-button">Start Your Test</a>
+                <a href="${testLink}" class="cta-button" style="color: white">Start Your Test</a>
               </p>
 
               <div class="instructions">
@@ -314,12 +314,11 @@ export async function sendProctorTestEmail(
             </div>
 
             <div class="details-box">
-              <p><strong>Candidate Name:</strong> ${candidateName}</p>
               <p><strong>Role:</strong> ${role}</p>
             </div>
 
             <p style="text-align: center; margin: 30px 0;">
-              <a href="${proctoringLink}" class="cta-button">Access Proctoring Dashboard</a>
+              <a href="${proctoringLink}" class="cta-button" style="color:white">Access Proctoring Dashboard</a>
             </p>
 
             <p style="font-size: 14px; color: #6b7280; margin-top: 20px;">

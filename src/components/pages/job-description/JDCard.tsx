@@ -30,7 +30,7 @@ export default function JDCard({
             </div>
 
             {/* BUTTON */}
-            <button onClick={onClick} className="cursor-pointer mt-4 w-full bg-blue-600 text-white py-2 rounded-lg font-semibold">
+            <button onClick={onClick} className="cursor-pointer text-sm mt-4 w-full bg-blue-600 text-white py-2 rounded-lg font-semibold">
                 View ATS →
             </button>
         </div>

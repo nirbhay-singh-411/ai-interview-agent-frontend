@@ -316,13 +316,6 @@ export default function ResultsPage() {
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                     <button
-                        onClick={() => router.push('/interview')}
-                        className="text-sm cursor-pointer flex items-center justify-center gap-2 px-8 py-3 bg-white text-slate-700 border border-slate-200 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all font-medium shadow-sm"
-                    >
-                        <RefreshCwIcon /> Retake Interview
-                    </button>
-
-                    <button
                         onClick={() => router.push('/dashboard')}
                         className="cursor-pointer flex items-center justify-center gap-2 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-xl transition-all font-medium shadow-lg shadow-slate-200"
                     >

@@ -69,7 +69,9 @@ const EntryForm = () => {
     try {
       const res = await initiateMail(payload);
       console.log(res);
-    } catch (error) {}
+    } catch (error) {
+      console.log("Error in sending mail ", error);
+    }
   };
 
   const createInterviewRecord = async (resumeId: number, jdId: number) => {
@@ -301,11 +303,10 @@ const EntryForm = () => {
                               setLevel(item as "junior" | "mid" | "senior")
                             }
                             className={`flex-1 cursor-pointer rounded-md text-sm font-medium transition-all
-                ${
-                  selected
-                    ? "bg-white shadow-sm text-primary ring-1 ring-black/5"
-                    : "text-slate-500 hover:text-slate-700"
-                }
+                ${selected
+                                ? "bg-white shadow-sm text-primary ring-1 ring-black/5"
+                                : "text-slate-500 hover:text-slate-700"
+                              }
               `}
                           >
                             {item[0].toUpperCase() + item.slice(1)}
