@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { RangeField } from '@/components/pages/interview-config/RangeField';
@@ -10,7 +10,8 @@ import { PageHeader } from '@/components/pages/interview-config/PageHeader';
 import { createInterview, generateInterviewQuestions, startInterview } from '@/services/interviews.service';
 import { LoaderCircle } from 'lucide-react';
 
-export default function InterviewConfigPage() {
+// 1. Rename the logic component to 'InterviewConfigContent'
+function InterviewConfigContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -190,6 +191,21 @@ export default function InterviewConfigPage() {
                 </div>
             </div>
         </div>
+    );
+}
 
+// 2. Export the Wrapper Component with Suspense
+export default function InterviewConfigPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <div className="text-center">
+                    <LoaderCircle size={40} className="animate-spin text-blue-600 mx-auto" />
+                    <p className="mt-4 text-gray-600 font-medium">Loading Configuration...</p>
+                </div>
+            </div>
+        }>
+            <InterviewConfigContent />
+        </Suspense>
     );
 }

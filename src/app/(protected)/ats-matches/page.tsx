@@ -1,12 +1,12 @@
 'use client';
 
+import { Suspense, useEffect, useRef, useState } from 'react'; // Added Suspense
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { PageHeader } from '@/components/pages/ats-matches/PageHeader';
 import { ResumeUpload } from '@/components/pages/ats-matches/ResumeUpload';
 import { MatchAllButton } from '@/components/pages/ats-matches/MatchAllButton';
 import { MatchedResumeCard } from '@/components/pages/ats-matches/MatchedResumeCard';
 import { UnmatchedResumeCard } from '@/components/pages/ats-matches/UnmatchedResumeCard';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
 import { listResumes, uploadResume } from '@/services/resumes.service';
 import { getMatches, matchAllResumes, matchResume } from '@/services/interviews.service';
 import { getJobDescription } from '@/services/jobDescription.service';
@@ -40,7 +40,9 @@ interface Resume {
     created_at: string;
 }
 
-export default function ATSMatchesPage() {
+// 1. Rename your original component to 'ATSMatchesContent'
+// This component keeps ALL your original logic
+function ATSMatchesContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const jobDescriptionId = searchParams.get('jd') ? parseInt(searchParams.get('jd')!) : null;
@@ -54,7 +56,6 @@ export default function ATSMatchesPage() {
     const [matching, setMatching] = useState(false);
     const [selectedUnmatched, setSelectedUnmatched] = useState<any | null>(null);
     const [error, setError] = useState<string | null>(null);
-
 
     useEffect(() => {
         if (jobDescriptionId) {
@@ -71,23 +72,17 @@ export default function ATSMatchesPage() {
         setError(null);
 
         try {
-            // Load job description
             const jdResponse = await getJobDescription(jobDescriptionId);
             setJobDescription(jdResponse);
 
-            // Load matches
             const matchesResponse = await getMatches(jobDescriptionId);
             const jdMatches = matchesResponse.matches || [];
             setMatches(jdMatches);
 
             const matchedResumeIds = new Set(jdMatches.map((m: ATSMatch) => m.resume));
-
-            // Load all resumes
             const resumesResponse = await listResumes();
             const allResumes = resumesResponse || [];
 
-            // Filter: Only show resumes that are NOT matched to this JD yet
-            // This allows the same resume to be matched to multiple JDs
             const unmatchedResumesForJD = allResumes.filter(
                 (r: Resume) => !matchedResumeIds.has(r.id) && r.status === 'extracted'
             );
@@ -115,13 +110,8 @@ export default function ATSMatchesPage() {
         try {
             const formData = new FormData();
             formData.append('file', file);
-
             const response = await uploadResume(formData);
-
-            // Reload data
             await loadData();
-
-            // Auto-match the new resume
             if (jobDescriptionId && response.id) {
                 await handleMatchResume(response.id);
             }
@@ -156,10 +146,8 @@ export default function ATSMatchesPage() {
 
     const handleMatchAllResumes = async () => {
         if (!jobDescriptionId) return;
-
         setMatching(true);
         setError(null);
-
         try {
             const response = await matchAllResumes(jobDescriptionId);
             setMatches(response.matches || []);
@@ -173,11 +161,9 @@ export default function ATSMatchesPage() {
     };
 
     const handleConductInterview = (resumeId: number, matchId: number) => {
-        // Navigate to interview configuration page
         router.push(`/interview-config?jd=${jobDescriptionId}&resume=${resumeId}&match=${matchId}`);
     };
 
-    // allResumes already contains only unmatched resumes for this JD
     const unmatchedResumes = allResumes;
 
     return (
@@ -236,8 +222,24 @@ export default function ATSMatchesPage() {
                         ))}
                     </div>
                 )}
-
             </div>
         </div>
+    );
+}
+
+// 2. Export a Wrapper Component that uses Suspense
+// This fixes the Next.js build error
+export default function ATSMatchesPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin h-8 w-8 border-b-2 border-blue-500 mx-auto rounded-full" />
+                    <p className="mt-4 text-gray-600">Loading Page...</p>
+                </div>
+            </div>
+        }>
+            <ATSMatchesContent />
+        </Suspense>
     );
 }

@@ -1,10 +1,6 @@
 'use client';
 
-/**
- * Interview History Page
- * Shows all interviews with their results, scores, and reports
- */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { getInterviewHistory } from '@/services/interviews.service';
 
@@ -45,7 +41,8 @@ interface InterviewHistory {
     report: any | null;
 }
 
-export default function InterviewHistoryPage() {
+// 1. Rename logic component to Content
+function InterviewHistoryContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const resumeId = searchParams.get('resume_id') ? parseInt(searchParams.get('resume_id')!) : undefined;
@@ -329,5 +326,21 @@ export default function InterviewHistoryPage() {
                 )}
             </div>
         </div>
+    );
+}
+
+// 2. Export Wrapper Component
+export default function InterviewHistoryPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+                <div className="flex flex-col items-center">
+                    <div className="w-10 h-10 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
+                    <p className="mt-4 text-slate-500 text-sm font-medium">Loading history...</p>
+                </div>
+            </div>
+        }>
+            <InterviewHistoryContent />
+        </Suspense>
     );
 }

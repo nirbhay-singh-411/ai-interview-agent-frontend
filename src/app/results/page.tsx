@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { generateInterviewReport, getInterviewReport } from '@/services/interviews.service';
 
@@ -26,9 +26,6 @@ const ListChecksIcon = () => (
 const HomeIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
 );
-const RefreshCwIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" /><path d="M21 3v5h-5" /><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" /><path d="M3 21v-5h5" /></svg>
-);
 
 interface ReportData {
     id: number;
@@ -45,7 +42,8 @@ interface ReportData {
     average_answer_length: number;
 }
 
-export default function ResultsPage() {
+// 1. Rename logic component to Content
+function ResultsContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const interviewId = searchParams.get('id') || localStorage.getItem('interviewId');
@@ -263,7 +261,7 @@ export default function ResultsPage() {
                         {/* Improvements */}
                         <div>
                             <h2 className="text-base font-bold text-slate-900 mb-3 flex items-center gap-2">
-                                <TrendingUpIcon  /> Areas for Improvement
+                                <TrendingUpIcon /> Areas for Improvement
                             </h2>
                             <div className="bg-amber-50/50 rounded-xl p-5 border border-amber-100/50 h-full">
                                 <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-line">
@@ -290,7 +288,7 @@ export default function ResultsPage() {
                         <div className="grid grid-cols-3 gap-4">
                             <div className="flex flex-col items-center text-center">
                                 <div className="bg-white p-2 rounded-lg shadow-sm border border-slate-100 mb-2">
-                                    <ListChecksIcon  />
+                                    <ListChecksIcon />
                                 </div>
                                 <span className="text-2xl font-bold text-slate-900">{report.total_questions}</span>
                                 <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">Total Questions</span>
@@ -304,7 +302,7 @@ export default function ResultsPage() {
                             </div>
                             <div className="flex flex-col items-center text-center">
                                 <div className="bg-white p-2 rounded-lg shadow-sm border border-slate-100 mb-2">
-                                    <ClockIcon  />
+                                    <ClockIcon />
                                 </div>
                                 <span className="text-2xl font-bold text-slate-900">{Math.round(report.average_answer_length)}</span>
                                 <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">Avg Char/Answer</span>
@@ -325,5 +323,21 @@ export default function ResultsPage() {
 
             </div>
         </div>
+    );
+}
+
+// 2. Export Wrapper Component
+export default function ResultsPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+                <div className="flex flex-col items-center">
+                    <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
+                    <p className="mt-4 text-slate-500 font-medium animate-pulse">Loading Results...</p>
+                </div>
+            </div>
+        }>
+            <ResultsContent />
+        </Suspense>
     );
 }

@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { completeInterview, generateInterviewReport, getInterviewQuestions, submitInterviewAnswer } from '@/services/interviews.service';
 
+// --- Icons ---
 const ClockIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
 );
@@ -39,7 +40,8 @@ interface Question {
     order_index: number;
 }
 
-export default function InterviewPage() {
+// 1. Rename logic component to Content
+function InterviewContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const interviewIdParam = searchParams.get('id');
@@ -72,7 +74,6 @@ export default function InterviewPage() {
             setIsFullscreen(true);
         } catch (err) {
             console.error("Error attempting to enable full-screen mode:", err);
-            // Fallback for Safari/Other browsers if needed
         }
     };
 
@@ -108,7 +109,6 @@ export default function InterviewPage() {
         // Prevent Copy/Cut/Paste
         const handleCopyCutPaste = (e: ClipboardEvent) => {
             e.preventDefault();
-            // Optional: Show toast message "Copying is disabled"
         };
 
         // Detect Alt-Tab or Window Switch
@@ -119,20 +119,11 @@ export default function InterviewPage() {
             }
         };
 
-        const handleBlur = () => {
-            // Only trigger if we are not interacting with the window (some browser quirks exist here)
-            // Ideally rely on visibilitychange for tab switching, blur can be sensitive
-            if (!document.hasFocus()) {
-                // You might want to be less aggressive with blur vs visibility
-            }
-        };
-
         document.addEventListener('contextmenu', handleContextMenu);
         document.addEventListener('copy', handleCopyCutPaste);
         document.addEventListener('cut', handleCopyCutPaste);
         document.addEventListener('paste', handleCopyCutPaste);
         document.addEventListener('visibilitychange', handleVisibilityChange);
-        // window.addEventListener('blur', handleBlur); 
 
         return () => {
             document.removeEventListener('contextmenu', handleContextMenu);
@@ -140,7 +131,6 @@ export default function InterviewPage() {
             document.removeEventListener('cut', handleCopyCutPaste);
             document.removeEventListener('paste', handleCopyCutPaste);
             document.removeEventListener('visibilitychange', handleVisibilityChange);
-            // window.removeEventListener('blur', handleBlur);
         };
     }, [testStarted, testCompleted]);
 
@@ -172,7 +162,7 @@ export default function InterviewPage() {
             }, 1000);
             return () => clearInterval(timer);
         }
-    }, [testStarted, testCompleted, timeRemaining, isFullscreen]); // Added isFullscreen dep
+    }, [testStarted, testCompleted, timeRemaining, isFullscreen]);
 
     const loadInterview = async () => {
         if (!interviewId) return;
@@ -185,8 +175,6 @@ export default function InterviewPage() {
                 return;
             }
             setQuestions(questionsData);
-            // We do NOT setTestStarted(true) here anymore.
-            // We wait for user to accept proctoring rules.
             setLoading(false);
         } catch (err: any) {
             console.error('Error loading interview:', err);
@@ -203,7 +191,6 @@ export default function InterviewPage() {
     const handleAutoSubmit = async () => {
         if (testCompleted || submitting) return;
         setTestCompleted(true);
-        // Automatically exit fullscreen on completion
         if (document.fullscreenElement) {
             document.exitFullscreen();
         }
@@ -608,5 +595,21 @@ export default function InterviewPage() {
                 </div>
             </main>
         </div>
+    );
+}
+
+// 2. Export Wrapper Component
+export default function InterviewPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+                <div className="flex flex-col items-center">
+                    <div className="w-12 h-12 border-4 border-indigo-200 border-t-blue-600 rounded-full animate-spin"></div>
+                    <p className="mt-4 text-slate-500 font-medium animate-pulse">Initializing Secure Environment...</p>
+                </div>
+            </div>
+        }>
+            <InterviewContent />
+        </Suspense>
     );
 }
