@@ -26,7 +26,7 @@ export default function HeroSection() {
                 </h2>
               </div>
               <div className="flex flex-wrap gap-4 mt-2">
-                <Link href="/dashboard">
+                <Link href="/login">
                   <button className="flex min-w-35 cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary hover:bg-blue-600 transition-all text-white text-base font-bold leading-normal tracking-[0.015em] shadow-lg shadow-primary/25">
                     <span className="truncate">Start AI Interview</span>
                   </button>

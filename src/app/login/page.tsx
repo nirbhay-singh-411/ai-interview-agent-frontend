@@ -1,7 +1,51 @@
-import Link from "next/link";
-import React from "react";
+'use client';
 
-const page = () => {
+import { updateIsLogin, updateUserRole } from "@/store/slices/appSlice";
+import { LoaderCircle } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { toast } from "sonner";
+
+const LoginPage = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const [email, setEmail] = useState('nirbhay411@gmail.com');
+  const [password, setPassword] = useState('123456');
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSignIn = async () => {
+    setIsLoading(true);
+    await new Promise(res => setTimeout(res, 1000));
+
+    let role: "hr" | "candidate" | "admin" | "" = '';
+
+    if (email === 'nirbhay411@gmail.com' && password === '123456') {
+      role = 'candidate';
+    } else if (email === 'nirbhay.singh@vanshiv.com' && password === '123456') {
+      role = 'hr';
+    } else {
+      toast.error("Wrong Email or Password");
+      setIsLoading(false);
+      return;
+    }
+
+    // 1. Update Redux
+    dispatch(updateUserRole(role));
+    dispatch(updateIsLogin(true));
+
+    // 2. Update LocalStorage
+    localStorage.setItem('userRole', role);
+    localStorage.setItem('isLogin', 'true');
+
+    setIsLoading(false);
+    router.push("/dashboard");
+  }
+
   return (
     <div className="font-display bg-background-light  text-slate-900  antialiased">
       <div className="flex min-h-screen w-full flex-col lg:flex-row">
@@ -107,6 +151,10 @@ const page = () => {
                       placeholder="name@company.com"
                       required
                       type="email"
+                      value={email}
+                      onChange={e => {
+                        setEmail(e.target.value);
+                      }}
                     />
                   </div>
                 </div>
@@ -141,11 +189,17 @@ const page = () => {
                       name="password"
                       placeholder="••••••••"
                       required
-                      type="password"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={e => {
+                        setPassword(e.target.value);
+                      }}
                     />
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer group">
+                    <div onClick={() => {
+                      setShowPassword(prev => !prev);
+                    }} className="select-none absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer group">
                       <span className="material-symbols-outlined text-slate-400 group-hover:text-slate-600  text-[20px]">
-                        visibility
+                        {showPassword ? "visibility" : "visibility_off"}
                       </span>
                     </div>
                   </div>
@@ -154,10 +208,17 @@ const page = () => {
               {/* Action Button */}
               <div>
                 <button
-                  className="flex w-full justify-center rounded-lg bg-primary px-3 py-3.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200 ease-in-out transform active:scale-[0.99]"
+                  onClick={handleSignIn}
+                  className="flex w-full justify-center items-center gap-2 cursor-pointer rounded-lg bg-primary px-3 py-3.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200 ease-in-out transform active:scale-[0.99]"
                   type="submit"
+                  disabled={isLoading}
                 >
                   Sign in
+                  {isLoading &&
+                    <div>
+                      <LoaderCircle className="animate-spin" size={20} />
+                    </div>
+                  }
                 </button>
               </div>
             </form>
@@ -242,4 +303,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default LoginPage;

@@ -1,10 +1,12 @@
 'use client';
 
+import { useAppSelector } from "@/store/reduxStore";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const Header = () => {
   const pathname = usePathname();
+  const userRole = useAppSelector(state => state.app.userRole);
 
   const segments = pathname
     .split("/")
@@ -69,10 +71,10 @@ const Header = () => {
             />
             <div className="hidden sm:block text-left mr-1 cursor-pointer">
               <p className="text-xs font-bold text-slate-900 leading-tight">
-                Sarah Wilson
+                Nirbhay Singh
               </p>
               <p className="text-[10px] text-slate-500 leading-tight">
-                ADMIN
+                {userRole.toUpperCase()}
               </p>
             </div>
             <span className="material-symbols-outlined text-slate-400 group-hover:text-slate-600 transition-colors">

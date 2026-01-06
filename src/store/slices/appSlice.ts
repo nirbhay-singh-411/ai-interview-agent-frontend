@@ -4,11 +4,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 type AppState = {
     resumeData: Object | null;
     jobDescriptions: JobDescription[]
+    userRole: "candidate" | "hr" | "admin" | ""
+    isLogin: boolean
 };
 
 const initialState: AppState = {
     resumeData: null,
-    jobDescriptions: []
+    jobDescriptions: [],
+    userRole: "",
+    isLogin: false
 };
 
 export const appSlice = createSlice({
@@ -20,9 +24,15 @@ export const appSlice = createSlice({
         },
         updateJobDescriptions: (state, action: PayloadAction<JobDescription[]>) => {
             state.jobDescriptions = [...action.payload];
+        },
+        updateUserRole: (state, action: PayloadAction<"candidate" | "hr" | "admin" | "">) => {
+            state.userRole = action.payload;
+        },
+        updateIsLogin: (state, action: PayloadAction<boolean>) => {
+            state.isLogin = action.payload;
         }
     },
 });
 
-export const { updateResumeData, updateJobDescriptions } = appSlice.actions;
+export const { updateResumeData, updateJobDescriptions, updateUserRole, updateIsLogin } = appSlice.actions;
 export default appSlice.reducer;
