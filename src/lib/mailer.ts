@@ -12,7 +12,6 @@ export interface CandidateEmailData {
   candidateName: string;
   candidateEmail: string;
   roleAppliedFor: string;
-  experienceLevel: string;
   testLink: string;
 }
 
@@ -20,7 +19,6 @@ export interface ProctorEmailData {
   candidateName: string;
   proctorEmail: string;
   role: string;
-  experienceLevel: string;
   scheduledDate?: string;
   scheduledTime?: string;
   proctoringLink: string;
@@ -34,7 +32,6 @@ export async function sendCandidateTestEmail(
       candidateName,
       candidateEmail,
       roleAppliedFor,
-      experienceLevel,
       testLink,
     } = data;
 
@@ -151,7 +148,6 @@ export async function sendCandidateTestEmail(
 
               <div class="details-box">
                 <p><strong>Role Applied For:</strong> ${roleAppliedFor}</p>
-                <p><strong>Experience Level:</strong> ${experienceLevel}</p>
               </div>
 
               <p style="text-align: center; margin: 30px 0;">
@@ -210,7 +206,6 @@ export async function sendProctorTestEmail(
       candidateName,
       proctorEmail,
       role,
-      experienceLevel,
       proctoringLink,
     } = data;
 
@@ -321,7 +316,6 @@ export async function sendProctorTestEmail(
             <div class="details-box">
               <p><strong>Candidate Name:</strong> ${candidateName}</p>
               <p><strong>Role:</strong> ${role}</p>
-              <p><strong>Experience Level:</strong> ${experienceLevel}</p>
             </div>
 
             <p style="text-align: center; margin: 30px 0;">

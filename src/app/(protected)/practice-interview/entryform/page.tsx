@@ -2,21 +2,32 @@
 
 import { createInterview } from "@/services/interviews.service";
 import { createJobDescription } from "@/services/jobDescription.service";
+import { initiateMail } from "@/services/mail.service";
 import { getResume, uploadResume } from "@/services/resumes.service";
 import { updateResumeData } from "@/store/slices/appSlice";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 
+export const getCurrentDomain = () => {
+  if (typeof window !== "undefined") {
+    return window.location.origin;
+  }
+
+  return process.env.NEXT_PUBLIC_BASE_URL || "";
+};
+
 const EntryForm = () => {
   const dispatch = useDispatch();
-
+  const router = useRouter();
   const [name, setName] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [skills, setSkills] = useState("");
   const [level, setLevel] = useState<"junior" | "mid" | "senior">("mid");
   const [role, setRole] = useState("");
+  const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [resumeData, setResumeData] = useState<any>(null);
   const [jdData, setjdData] = useState<any>(null);
@@ -39,6 +50,24 @@ const EntryForm = () => {
     setFile(e.target.files[0]);
   };
 
+  const sendInterviewEmail = async (id: number) => {
+    const url = `${getCurrentDomain()}/interview/${id}`;
+
+    const payload = {
+      candidateName: name,
+      candidateEmail: email,
+      roleAppliedFor: role,
+      experienceLevel: "",
+      testLink: url,
+      proctorEmail: "divyanshu.bhati@vanshiv.com",
+      proctoringLink: url,
+    };
+    try {
+      const res = await initiateMail(payload);
+      console.log(res);
+    } catch (error) {}
+  };
+
   const createInterviewRecord = async (resumeId: number, jdId: number) => {
     console.log("entered");
     try {
@@ -48,7 +77,9 @@ const EntryForm = () => {
         time_limit_minutes: 10,
       });
       console.log(res);
-      return res;
+      await sendInterviewEmail(res?.id);
+
+      return router.push(`/practice-interview/${res?.id}`);
     } catch (error) {
       console.error("Error creating interview record:", error);
       throw error;
@@ -154,7 +185,9 @@ const EntryForm = () => {
     poll();
   };
 
-  const isDisabled = Boolean(!name.trim() || !role || !level || !file);
+  const isDisabled = Boolean(
+    !name.trim() || !role || !level || !file || !email || !skills
+  );
 
   return (
     <div>
@@ -184,19 +217,35 @@ const EntryForm = () => {
                   </h3>
                 </div>
                 {/* Full Name */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-slate-700">
-                    Full Name
-                  </label>
-                  <input
-                    className="w-full rounded-lg text-sm border-slate-300 bg-slate-50 text-slate-900 focus:border-primary focus:ring-primary placeholder:text-slate-400 h-12 px-4 transition-shadow"
-                    placeholder="e.g. Jane Doe"
-                    type="text"
-                    value={name}
-                    onChange={(e) => {
-                      setName(e.target.value);
-                    }}
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-slate-700">
+                      Full Name
+                    </label>
+                    <input
+                      className="w-full rounded-lg text-sm border-slate-300 bg-slate-50 text-slate-900 focus:border-primary focus:ring-primary placeholder:text-slate-400 h-12 px-4 transition-shadow"
+                      placeholder="e.g. Jane Doe"
+                      type="text"
+                      value={name}
+                      onChange={(e) => {
+                        setName(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-slate-700">
+                      Email
+                    </label>
+                    <input
+                      className="w-full rounded-lg text-sm border-slate-300 bg-slate-50 text-slate-900 focus:border-primary focus:ring-primary placeholder:text-slate-400 h-12 px-4 transition-shadow"
+                      placeholder="e.g. Jane Doe"
+                      type="text"
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                      }}
+                    />
+                  </div>
                 </div>
                 {/* Role & Experience Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
