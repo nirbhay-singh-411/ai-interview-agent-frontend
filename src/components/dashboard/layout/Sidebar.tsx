@@ -35,8 +35,8 @@ const Sidebar = () => {
           {
             label: "Practice Interview",
             icon: "videocam",
-            href: "/Interview",
-            active: pathname.includes("/Interview")
+            href: "/practice-interview",
+            active: pathname.includes("/practice-interview")
           },
           {
             label: "Interview History",

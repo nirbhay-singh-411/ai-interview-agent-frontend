@@ -131,7 +131,7 @@ const page = () => {
                     </p>
                     <div className="flex flex-wrap gap-3">
                       <Link
-                        href={"/Interview"}
+                        href={"/practice-interview"}
                         className="flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-dark text-white rounded-lg font-semibold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
                       >
                         <span className="material-symbols-outlined text-[20px]">
