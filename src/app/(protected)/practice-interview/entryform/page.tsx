@@ -1,6 +1,6 @@
 "use client";
 
-import { createInterview } from "@/services/interviews.service";
+import { createInterview, generateInterviewQuestions } from "@/services/interviews.service";
 import { createJobDescription } from "@/services/jobDescription.service";
 import { initiateMail } from "@/services/mail.service";
 import { getResume, uploadResume } from "@/services/resumes.service";
@@ -51,7 +51,7 @@ const EntryForm = () => {
   };
 
   const sendInterviewEmail = async (id: number) => {
-    const url = `${getCurrentDomain()}/interview/${id}`;
+    const url = `${getCurrentDomain()}/interview?id=${id}&time=15`;
 
     const payload = {
       candidateName: name,
@@ -68,6 +68,8 @@ const EntryForm = () => {
     } catch (error) {}
   };
 
+ 
+
   const createInterviewRecord = async (resumeId: number, jdId: number) => {
     console.log("entered");
     try {
@@ -77,9 +79,12 @@ const EntryForm = () => {
         time_limit_minutes: 10,
       });
       console.log(res);
-      await sendInterviewEmail(res?.id);
+      await  generateInterviewQuestions(res.id, 5);
+      sendInterviewEmail(res?.id);
 
-      return router.push(`/practice-interview/${res?.id}`);
+      return router.push(
+        `/interview?id=${res.id}&questions=${5}&time=${15 * 60}`
+      );
     } catch (error) {
       console.error("Error creating interview record:", error);
       throw error;
@@ -90,6 +95,7 @@ const EntryForm = () => {
       const res = await createJobDescription({
         title: role,
         description: skills,
+        required_skills: skills,
       });
 
       setjdData(res);
