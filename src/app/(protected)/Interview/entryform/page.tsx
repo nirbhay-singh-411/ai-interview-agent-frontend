@@ -1,5 +1,7 @@
-'use client';
+"use client";
 
+import { createInterview } from "@/services/interviews.service";
+import { createJobDescription } from "@/services/jobDescription.service";
 import { getResume, uploadResume } from "@/services/resumes.service";
 import { updateResumeData } from "@/store/slices/appSlice";
 import Link from "next/link";
@@ -10,12 +12,14 @@ import { toast } from "sonner";
 const EntryForm = () => {
   const dispatch = useDispatch();
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [skills, setSkills] = useState("");
   const [level, setLevel] = useState<"junior" | "mid" | "senior">("mid");
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [resumeData, setResumeData] = useState<any>(null);
+  const [jdData, setjdData] = useState<any>(null);
   const [extracting, setExtracting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,12 +32,44 @@ const EntryForm = () => {
     }
 
     fileInputRef.current.click();
-  }
+  };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     setFile(e.target.files[0]);
-  }
+  };
+
+  const createInterviewRecord = async (resumeId: number, jdId: number) => {
+    console.log("entered");
+    try {
+      const res = await createInterview({
+        resume: resumeId,
+        job_description: jdId,
+        time_limit_minutes: 10,
+      });
+      console.log(res);
+      return res;
+    } catch (error) {
+      console.error("Error creating interview record:", error);
+      throw error;
+    }
+  };
+  const createJobDescriptionrecord = async (resumeId: number) => {
+    try {
+      const res = await createJobDescription({
+        title: role,
+        description: skills,
+      });
+
+      setjdData(res);
+
+      // Pass the IDs directly instead of relying on state
+      await createInterviewRecord(resumeId, res.id);
+    } catch (error) {
+      console.error("Error creating job description:", error);
+      throw error;
+    }
+  };
 
   const handleStartInterview = async () => {
     if (!file) {
@@ -43,37 +79,40 @@ const EntryForm = () => {
     try {
       setIsLoading(true);
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
 
       const res = await uploadResume(formData);
 
-      console.log('Resume uploaded -> ', res);
-      toast.success('Resume uploaded');
+      console.log("Resume uploaded -> ", res);
+      toast.success("Resume uploaded");
 
       setResumeData(res);
       dispatch(updateResumeData(res));
 
       // Store resume ID in localStorage for later use
       if (res.id) {
-        localStorage.setItem('resumeId', res.id.toString());
+        localStorage.setItem("resumeId", res.id.toString());
       }
 
       // Check if text extraction is in progress
-      if (res.status === 'processing') {
+      if (res.status === "processing") {
         setExtracting(true);
         pollForExtraction(res.id);
-      } else if (res.status === 'extracted') {
+      } else if (res.status === "extracted") {
         setSuccess(true);
       } else {
         setSuccess(true);
       }
+
+      // Pass resume ID directly instead of relying on state
+      await createJobDescriptionrecord(res.id);
     } catch (error) {
       toast.error("Problem in uploading the resume");
       console.log("Error in uploading resume -> ", error);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   const pollForExtraction = async (resumeId: number) => {
     // Poll every 2 seconds for extraction status
@@ -85,25 +124,29 @@ const EntryForm = () => {
         const response = await getResume(resumeId);
         const resume = response.data;
 
-        if (resume.status === 'extracted') {
+        if (resume.status === "extracted") {
           setExtracting(false);
           setResumeData(resume);
           dispatch(updateResumeData(resume));
           setSuccess(true);
-        } else if (resume.status === 'failed') {
+        } else if (resume.status === "failed") {
           setExtracting(false);
-          setError('Failed to extract text from PDF. The resume was uploaded but text extraction failed.');
+          setError(
+            "Failed to extract text from PDF. The resume was uploaded but text extraction failed."
+          );
           setResumeData(resume);
         } else if (attempts < maxAttempts) {
           attempts++;
           setTimeout(poll, 2000);
         } else {
           setExtracting(false);
-          setError('Text extraction is taking longer than expected. You can continue to the interview.');
+          setError(
+            "Text extraction is taking longer than expected. You can continue to the interview."
+          );
           setResumeData(resume);
         }
       } catch (err) {
-        console.error('Error polling extraction status:', err);
+        console.error("Error polling extraction status:", err);
         setExtracting(false);
       }
     };
@@ -150,7 +193,7 @@ const EntryForm = () => {
                     placeholder="e.g. Jane Doe"
                     type="text"
                     value={name}
-                    onChange={e => {
+                    onChange={(e) => {
                       setName(e.target.value);
                     }}
                   />
@@ -166,13 +209,11 @@ const EntryForm = () => {
                       <select
                         className="w-full text-sm rounded-lg border-slate-300 bg-slate-50 text-slate-900 focus:border-primary focus:ring-primary h-12 px-4 appearance-none cursor-pointer"
                         value={role}
-                        onChange={e => {
+                        onChange={(e) => {
                           setRole(e.target.value);
                         }}
                       >
-                        <option>
-                          Select a role
-                        </option>
+                        <option>Select a role</option>
                         <option value="frontend">Frontend Developer</option>
                         <option value="backend">Backend Developer</option>
                         <option value="product">Product Manager</option>
@@ -198,12 +239,15 @@ const EntryForm = () => {
                         return (
                           <button
                             key={item}
-                            onClick={() => setLevel(item as "junior" | "mid" | "senior")}
+                            onClick={() =>
+                              setLevel(item as "junior" | "mid" | "senior")
+                            }
                             className={`flex-1 cursor-pointer rounded-md text-sm font-medium transition-all
-                ${selected
-                                ? "bg-white shadow-sm text-primary ring-1 ring-black/5"
-                                : "text-slate-500 hover:text-slate-700"
-                              }
+                ${
+                  selected
+                    ? "bg-white shadow-sm text-primary ring-1 ring-black/5"
+                    : "text-slate-500 hover:text-slate-700"
+                }
               `}
                           >
                             {item[0].toUpperCase() + item.slice(1)}
@@ -213,6 +257,20 @@ const EntryForm = () => {
                     </div>
                   </div>
                 </div>
+              </div>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-slate-700">
+                  Skills <span className="text-red-500">*</span>
+                </label>
+                <input
+                  className="w-full rounded-lg text-sm border-slate-300 bg-slate-50 text-slate-900 focus:border-primary focus:ring-primary placeholder:text-slate-400 h-12 px-4 transition-shadow"
+                  placeholder="e.g. React, Node.JS, Next.JS"
+                  type="text"
+                  value={skills}
+                  onChange={(e) => {
+                    setSkills(e.target.value);
+                  }}
+                />
               </div>
               <div className="h-px bg-slate-100 w-full" />
               {/* Section: Resume Upload */}
@@ -233,10 +291,13 @@ const EntryForm = () => {
                   type="file"
                   ref={fileInputRef}
                   className="hidden"
-                  onChange={e => handleFileChange(e)}
+                  onChange={(e) => handleFileChange(e)}
                   accept="application/pdf"
                 />
-                <div onClick={handleFileUpload} className="group relative flex flex-col items-center justify-center w-full h-40 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer">
+                <div
+                  onClick={handleFileUpload}
+                  className="group relative flex flex-col items-center justify-center w-full h-40 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer"
+                >
                   <div className="flex flex-col items-center justify-center pt-5 pb-6 text-center px-4">
                     <div className="bg-primary/10 text-primary p-2 rounded-full mb-3 group-hover:scale-110 transition-transform">
                       <span className="material-symbols-outlined text-3xl">
@@ -287,7 +348,6 @@ const EntryForm = () => {
                     </button>
                   </div>
                 )}
-
               </div>
             </div>
             {/* Footer Actions */}
@@ -297,18 +357,17 @@ const EntryForm = () => {
                 disabled={isDisabled}
                 onClick={handleStartInterview}
               >
-                {
-                  isLoading &&
+                {isLoading && (
                   <span className="material-symbols-outlined animate-spin">
                     progress_activity
                   </span>
-                }
+                )}
                 <span className="text-sm">Start Interview</span>
-                {
-                  !isLoading &&
+                {!isLoading && (
                   <span className="material-symbols-outlined text-lg">
                     arrow_forward
-                  </span>}
+                  </span>
+                )}
               </button>
               <Link href="/dashboard">
                 <button className="w-full sm:w-auto cursor-pointer inline-flex items-center justify-center gap-2 px-4 py-3 text-slate-600 hover:text-slate-900 text-sm font-medium rounded-lg transition-colors">
