@@ -114,7 +114,7 @@ export default function InterviewConfigPage() {
                                     min={5}
                                     max={10}
                                     value={numQuestions}
-                                    onChange={(v) => setNumQuestions(v)}
+                                    onChange={(v:any) => setNumQuestions(v)}
                                     highlight={numQuestions}
                                     unit="questions"
                                     hint="Select between 5 to 10 questions"
@@ -139,7 +139,7 @@ export default function InterviewConfigPage() {
                                     max={120}
                                     step={5}
                                     value={timeLimit}
-                                    onChange={(v) => setTimeLimit(v)}
+                                    onChange={(v:any) => setTimeLimit(v)}
                                     highlight={timeLimit}
                                     unit="minutes"
                                     hint="Select between 10 to 120 minutes"

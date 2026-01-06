@@ -1,13 +1,17 @@
 "use client";
 
-import { createInterview, generateInterviewQuestions } from "@/services/interviews.service";
+import { LoadingOverlay } from "@/components/LoadingOverlay";
+import {
+  createInterview,
+  generateInterviewQuestions,
+} from "@/services/interviews.service";
 import { createJobDescription } from "@/services/jobDescription.service";
 import { initiateMail } from "@/services/mail.service";
 import { getResume, uploadResume } from "@/services/resumes.service";
 import { updateResumeData } from "@/store/slices/appSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 
@@ -68,8 +72,6 @@ const EntryForm = () => {
     } catch (error) {}
   };
 
- 
-
   const createInterviewRecord = async (resumeId: number, jdId: number) => {
     console.log("entered");
     try {
@@ -79,7 +81,7 @@ const EntryForm = () => {
         time_limit_minutes: 10,
       });
       console.log(res);
-      await  generateInterviewQuestions(res.id, 5);
+      await generateInterviewQuestions(res.id, 5);
       sendInterviewEmail(res?.id);
 
       return router.push(
@@ -197,6 +199,7 @@ const EntryForm = () => {
 
   return (
     <div>
+      <LoadingOverlay show={isLoading} />
       <main className="flex-1 flex flex-col items-center justify-center p-4 md:p-8">
         <div className="w-full max-w-160 flex flex-col gap-6">
           {/* Page Heading */}

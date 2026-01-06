@@ -241,7 +241,7 @@ export default function ResultsPage() {
                     <div className="p-8 grid grid-cols-1 lg:grid-cols-2 gap-10">
                         <div className="lg:col-span-2">
                             <h2 className="text-base font-bold text-slate-900 mb-3 flex items-center gap-2">
-                                <AwardIcon className="text-indigo-500" /> Executive Summary
+                                <AwardIcon /> Executive Summary
                             </h2>
                             <div className="bg-slate-50 rounded-xl px-5 py-3 border border-slate-100 text-slate-700 leading-relaxed text-sm">
                                 {report.summary}
@@ -251,7 +251,7 @@ export default function ResultsPage() {
                         {/* Strengths */}
                         <div>
                             <h2 className="text-basefont-bold text-slate-900 mb-3 flex items-center gap-2">
-                                <CheckCircleIcon className="text-emerald-500" /> Key Strengths
+                                <CheckCircleIcon /> Key Strengths
                             </h2>
                             <div className="bg-emerald-50/50 rounded-xl p-5 border border-emerald-100/50 h-full">
                                 <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-line">
@@ -263,7 +263,7 @@ export default function ResultsPage() {
                         {/* Improvements */}
                         <div>
                             <h2 className="text-base font-bold text-slate-900 mb-3 flex items-center gap-2">
-                                <TrendingUpIcon className="text-amber-500" /> Areas for Improvement
+                                <TrendingUpIcon  /> Areas for Improvement
                             </h2>
                             <div className="bg-amber-50/50 rounded-xl p-5 border border-amber-100/50 h-full">
                                 <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-line">
@@ -275,7 +275,7 @@ export default function ResultsPage() {
                         {/* Recommendations (Full Width) */}
                         <div className="lg:col-span-2 mt-9">
                             <h2 className="text-base font-bold text-slate-900 mb-3 flex items-center gap-2">
-                                <LightbulbIcon className="text-blue-500" /> Actionable Recommendations
+                                <LightbulbIcon /> Actionable Recommendations
                             </h2>
                             <div className="bg-blue-50/50 rounded-xl p-5 border border-blue-100/50">
                                 <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-line">
@@ -290,21 +290,21 @@ export default function ResultsPage() {
                         <div className="grid grid-cols-3 gap-4">
                             <div className="flex flex-col items-center text-center">
                                 <div className="bg-white p-2 rounded-lg shadow-sm border border-slate-100 mb-2">
-                                    <ListChecksIcon className="text-slate-400" />
+                                    <ListChecksIcon  />
                                 </div>
                                 <span className="text-2xl font-bold text-slate-900">{report.total_questions}</span>
                                 <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">Total Questions</span>
                             </div>
                             <div className="flex flex-col items-center text-center">
                                 <div className="bg-white p-2 rounded-lg shadow-sm border border-slate-100 mb-2">
-                                    <CheckCircleIcon className="text-slate-400" />
+                                    <CheckCircleIcon />
                                 </div>
                                 <span className="text-2xl font-bold text-slate-900">{report.questions_answered}</span>
                                 <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">Answered</span>
                             </div>
                             <div className="flex flex-col items-center text-center">
                                 <div className="bg-white p-2 rounded-lg shadow-sm border border-slate-100 mb-2">
-                                    <ClockIcon className="text-slate-400" />
+                                    <ClockIcon  />
                                 </div>
                                 <span className="text-2xl font-bold text-slate-900">{Math.round(report.average_answer_length)}</span>
                                 <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">Avg Char/Answer</span>
