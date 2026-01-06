@@ -2,11 +2,10 @@
 import { usePathname } from "next/navigation";
 
 const Sidebar = () => {
-    const pathname = usePathname();
-    console.log(pathname)
+  const pathname = usePathname();
+  console.log(pathname)
   return (
-    <aside className="hidden max-h-screen md:flex flex-col w-72 bg-card-light border-r border-slate-200 flex-shrink-0 z-40">
-        
+    <aside className="hidden max-h-screen sticky top-0 md:flex flex-col w-72 bg-card-light border-r border-slate-200 flex-shrink-0 z-40">
       <div className="h-20 flex items-center gap-3 px-6 border-b border-slate-100">
         <div className="size-8 text-primary bg-primary/10 rounded-lg flex items-center justify-center">
           <span className="material-symbols-outlined text-2xl">smart_toy</span>
