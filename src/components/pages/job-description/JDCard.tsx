@@ -9,7 +9,7 @@ export default function JDCard({
 }) {
     return (
         <div
-            className="bg-white rounded-xl shadow p-5 hover:shadow-lg transition min-h-[248px] h-full flex flex-col"
+            className="bg-white rounded-xl shadow hover:drop-shadow-xl p-5 hover:shadow-lg transition min-h-[248px] h-full flex flex-col"
         >
             {/* CONTENT */}
             <div className="flex-1">
