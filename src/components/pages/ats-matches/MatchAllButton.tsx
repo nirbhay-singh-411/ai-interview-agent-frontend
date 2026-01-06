@@ -1,12 +1,19 @@
+import { LoaderCircle } from "lucide-react";
+
 export function MatchAllButton({ count, matching, onMatch }: any) {
     return (
         <div className="text-center">
             <button
                 onClick={onMatch}
                 disabled={matching}
-                className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300"
+                className="px-6 py-3 text-sm font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300"
             >
-                {matching ? 'Matching…' : `Match ${count} Resume(s)`}
+                {matching ?
+                    <div className="flex items-center gap-2">
+                        <span>Matching</span>
+                        <LoaderCircle className="animate-spin" size={20} />
+                    </div>
+                    : `Match ${count} Resumes`}
             </button>
         </div>
     );

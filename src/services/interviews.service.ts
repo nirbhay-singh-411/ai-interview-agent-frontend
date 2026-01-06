@@ -94,3 +94,8 @@ export const getMatches = async (jobDescriptionId: number, params?: { status?: s
     const res = await apiClient.get(`/api/interviews/job-descriptions/${jobDescriptionId}/matches/`, { params });
     return res.data;
 }
+
+export const getResumesForJD = async (jobDescriptionId: number, params?: { matched_only?: boolean; unmatched_only?: boolean }) => {
+    const res = await apiClient.get(`/api/interviews/job-descriptions/${jobDescriptionId}/resumes/`, { params });
+    return res.data;
+}

@@ -27,7 +27,7 @@ export function ResumeUpload({ uploading, onUpload, fileInputRef }: any) {
 
                 <label
                     htmlFor="resume-upload"
-                    className={`inline-flex cursor-pointer items-center justify-center px-6 py-3 rounded-lg font-medium shadow-sm transition-all
+                    className={`inline-flex cursor-pointer text-sm font-semibold items-center justify-center px-6 py-3 rounded-lg shadow-sm transition-all
                         ${uploading
                             ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
                             : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow'

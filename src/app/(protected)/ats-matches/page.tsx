@@ -75,11 +75,21 @@ export default function ATSMatchesPage() {
 
             // Load matches
             const matchesResponse = await getMatches(jobDescriptionId);
-            setMatches(matchesResponse.matches || []);
+            const jdMatches = matchesResponse.matches || [];
+            setMatches(jdMatches);
+
+            const matchedResumeIds = new Set(jdMatches.map((m: ATSMatch) => m.resume));
 
             // Load all resumes
             const resumesResponse = await listResumes();
-            setAllResumes(resumesResponse || []);
+            const allResumes = resumesResponse || [];
+
+            // Filter: Only show resumes that are NOT matched to this JD yet
+            // This allows the same resume to be matched to multiple JDs
+            const unmatchedResumesForJD = allResumes.filter(
+                (r: Resume) => !matchedResumeIds.has(r.id) && r.status === 'extracted'
+            );
+            setAllResumes(unmatchedResumesForJD);
         } catch (err: any) {
             console.error('Error loading data:', err);
             setError(err.response?.data?.error || 'Failed to load data');
@@ -178,14 +188,12 @@ export default function ATSMatchesPage() {
         return 'Weak Match';
     };
 
-    // Get resumes that are matched
-    const matchedResumeIds = new Set(matches.map(m => m.resume));
-    const unmatchedResumes = allResumes.filter(r => !matchedResumeIds.has(r.id) && r.status === 'extracted');
+    // allResumes already contains only unmatched resumes for this JD
+    const unmatchedResumes = allResumes;
 
     return (
         <div className="min-h-screen bg-gray-50 py-8 px-4">
             <div className="max-w-6xl mx-auto space-y-6">
-
                 <PageHeader jobDescription={jobDescription} />
 
                 <ResumeUpload uploading={uploading} onUpload={handleFileUpload} fileInputRef={fileInputRef} />
