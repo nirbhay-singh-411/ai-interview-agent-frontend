@@ -1504,7 +1504,7 @@ function InterviewContent() {
                                     </span>
                                 </div>
                                 <div className="p-6 sm:p-8">
-                                    <h2 className="text-xl font-bold text-slate-900 mb-8">{currentQuestion.question_text}</h2>
+                                    <h2 className="text-lg font-medium text-slate-900 mb-8">{currentQuestion.question_text}</h2>
                                     {currentQuestion.is_mcq ? (
                                         <div className="space-y-3">
                                             {currentQuestion.options?.map((option, index) => {
@@ -1529,11 +1529,11 @@ function InterviewContent() {
                             </div>
                         )}
                         <div className="flex items-center justify-between">
-                            <button onClick={handlePrevious} disabled={currentQuestionIndex === 0} className="px-5 py-2 text-slate-600 disabled:opacity-50">Previous</button>
+                            <button onClick={handlePrevious} disabled={currentQuestionIndex === 0} className="px-5 py-2 text-slate-600 disabled:opacity-50 cursor-pointer">Previous</button>
                             {currentQuestionIndex < questions.length - 1 ? (
-                                <button onClick={handleNext} className="px-8 py-2.5 bg-slate-900 text-white rounded-lg">Next</button>
+                                <button onClick={handleNext} className="px-8 py-2.5 bg-slate-900 text-white rounded-lg cursor-pointer font-semibold">Next</button>
                             ) : (
-                                <button onClick={handleSubmit} disabled={submitting} className="px-8 py-2.5 bg-emerald-600 text-white rounded-lg">Submit</button>
+                                <button onClick={handleSubmit} disabled={submitting} className="px-8 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg cursor-pointer font-semibold">Submit</button>
                             )}
                         </div>
                     </div>
@@ -1542,7 +1542,7 @@ function InterviewContent() {
                             <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">Question Map</h3>
                             <div className="flex flex-wrap gap-2">
                                 {questions.map((_, i) => (
-                                    <button key={i} onClick={() => setCurrentQuestionIndex(i)} className={`w-9 h-9 rounded-lg text-sm font-medium ${i === currentQuestionIndex ? 'bg-blue-600 text-white' : 'bg-slate-100'}`}>{i + 1}</button>
+                                    <button key={i} onClick={() => setCurrentQuestionIndex(i)} className={`w-9 h-9 rounded-lg text-sm font-medium cursor-pointer ${i === currentQuestionIndex ? 'bg-blue-600 text-white' : 'bg-slate-100'}`}>{i + 1}</button>
                                 ))}
                             </div>
                         </div>

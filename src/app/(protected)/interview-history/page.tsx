@@ -211,7 +211,7 @@ function InterviewHistoryContent() {
                                     {/* Left: Main Info */}
                                     <div className="flex-1 space-y-4">
                                         <div className="flex flex-wrap items-center gap-3">
-                                            <h3 className="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                                            <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
                                                 {interview.title}
                                             </h3>
                                             <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide border ${getStatusStyle(interview.status)}`}>
@@ -281,7 +281,7 @@ function InterviewHistoryContent() {
                                             {interview.report ? (
                                                 <button
                                                     onClick={() => router.push(`/results?id=${interview.id}`)}
-                                                    className="flex-1 lg:flex-none px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors shadow-sm whitespace-nowrap"
+                                                    className="flex-1 cursor-pointer g:flex-none px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors shadow-sm whitespace-nowrap"
                                                 >
                                                     View Report
                                                 </button>
